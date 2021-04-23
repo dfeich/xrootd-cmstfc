@@ -1,7 +1,7 @@
 
 Name: xrootd-cmstfc
-Version: 1.5.1
-Release: 3%{?dist}
+Version: 1.5.2
+Release: 1%{?dist}
 Summary: CMS TFC plugin for xrootd
 
 Group: System Environment/Daemons
@@ -9,8 +9,7 @@ License: BSD
 URL: https://github.com/bbockelm/xrootd-cmstfc
 # Generated from:
 # git-archive master | gzip -7 > ~/rpmbuild/SOURCES/xrootd-lcmaps.tar.gz
-Source0: %{name}.tar.gz
-BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+Source0: %{name}-%{version}.tar.gz
 BuildRequires: xrootd-libs-devel xerces-c-devel pcre-devel
 BuildRequires: cmake
 Requires: /usr/bin/xrootd pcre xerces-c
@@ -26,11 +25,12 @@ Group: System Environment/Development
 %{summary}
 
 %prep
-%setup -q -c -n %{name}-%{version}
+%setup -q -n %{name}-%{version}
 
 %build
 
-%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
+%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX="%{_prefix}" \
+       -DCMAKE_INSTALL_LIBDIR="%{_libdir}" .
 make VERBOSE=1 %{?_smp_mflags}
 
 %install
